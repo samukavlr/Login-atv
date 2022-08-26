@@ -7,7 +7,8 @@ import { Login } from '../components/Login/Login';
 import { Dashboard } from '../page/Dashboard';
 import { ListaCategorias } from '../page/Categorias/ListaCategorias';
 import { CategoriaForm } from '../page/CategoriaForm/CategoriaForm';
-import { ListaProdutos } from '../page/Produtos/Listaprodutos';
+import { ListaProdutos } from '../page/Produtos/ListaProdutos';
+
 
 function CustomRoute({ isPrivate, ...rest}){
 
@@ -27,6 +28,8 @@ export default function PrivateRoute(){
             <CustomRoute isPrivate path="/categorias/novo" component={CategoriaForm} />
             <CustomRoute isPrivate path="/categories/update/:id" component={CategoriaForm} />
             <CustomRoute isPrivate path="/categorias" component={ListaCategorias} />
+
+            <CustomRoute isPrivate path="/produtos" component={ListaProdutos} />
             
         
           
