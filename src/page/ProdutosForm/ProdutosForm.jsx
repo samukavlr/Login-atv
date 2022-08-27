@@ -7,15 +7,18 @@ import { NavBar } from '../../components/UI/NavBar/NavBar'
 const initialValue = {
     name: '',
     description: '',
-    
+    quantity:'',
+    price: '', 
+    categorieId:''
 }
 
-export const CategoriaForm = (props) => {
+export const ProdutosForm = (props) => {
 
     const history = useHistory();
 
     const [id] = useState(props.match.params.id);
 
+    const [categories, setCategories] =useState([])
     const [values, setValues] = useState(initialValue);
     const [acao, setAcao] = useState('Novas');
     const [status, setStatus] = useState({
@@ -29,9 +32,10 @@ export const CategoriaForm = (props) => {
         ...values,
         [e.target.name]: e.target.value
     })
+    
 
     useEffect(() => {
-        const getCategories = async () => {
+        const getProducts = async () => {
             const headers = {
                 'headers': {
                     'Content-Type': 'application/json',
@@ -41,8 +45,8 @@ export const CategoriaForm = (props) => {
 
             await api.get("/products/show/" + id, headers)
                 .then((response) => {
-                    if (response.data.categories) {
-                        setValues(response.data.categories);
+                    if (response.data.products) {
+                        setValues(response.data.products);
                         setAcao('Editar');
                     } else {
                         setStatus({
@@ -64,7 +68,7 @@ export const CategoriaForm = (props) => {
                     }
                 })
         }
-        if (id) getCategories();
+        if (id) getProducts();
 
     }, [id])
 
@@ -83,7 +87,7 @@ export const CategoriaForm = (props) => {
             await api.post("/products/create", values, headers)
                 .then((response) => {
                     setStatus({ loading: false })
-                    return history.push('/categorias')
+                    return history.push('/produtos')
                 }).catch((err) => {
                     if (err.response) {
                         setStatus({
@@ -104,7 +108,7 @@ export const CategoriaForm = (props) => {
             await api.put("/products/update", values, headers)
                 .then((response) => {
                     setStatus({ loading: false })
-                    return history.push('/categorias')
+                    return history.push('/produtos')
                 }).catch((err) => {
                     if (err.response) {
                         setStatus({
@@ -130,7 +134,7 @@ export const CategoriaForm = (props) => {
             <NavBar />
             <Container className="box">
                 <Form onSubmit={formSubmit} className="borderForm">
-                    <h2>{acao} Categorias</h2>
+                    <h2>{acao} Produtos</h2>
 
                     {status.type == 'error'
                         ? <Alert variant="danger">{status.mensagem}</Alert>
@@ -146,12 +150,27 @@ export const CategoriaForm = (props) => {
                         <Form.Control type="name" name="name" value={values.name} onChange={valorInput} placeholder="Nome" />
                     </Form.Group>
 
+                    <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Label>Quantidade</Form.Label>
+                        <Form.Control type="number" name="quantity" value={values.quantity} onChange={valorInput} placeholder="Quantidade" />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Label>Preço</Form.Label>
+                        <Form.Control type="number" name="price" value={values.price} onChange={valorInput} placeholder="Preço" />
+                    </Form.Group>
+
+
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Descrição</Form.Label>
                         <Form.Control type="description" name="description" value={values.description} onChange={valorInput} placeholder="Descrição" />
                         <Form.Text className="text-muted">
-                            Adicione uma descrição para sua Categoria...
+                            Adicione uma descrição para sua produto...
                         </Form.Text>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Label>Categoria</Form.Label>
+                        <Form.Select></Form.Select>
                     </Form.Group>
                     {/* {!id &&
                         <Form.Group className="mb-3" controlId="formBasicPassword">

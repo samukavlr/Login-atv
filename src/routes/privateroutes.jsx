@@ -8,6 +8,7 @@ import { Dashboard } from '../page/Dashboard';
 import { ListaCategorias } from '../page/Categorias/ListaCategorias';
 import { CategoriaForm } from '../page/CategoriaForm/CategoriaForm';
 import { ListaProdutos } from '../page/Produtos/ListaProdutos';
+import { ProdutosForm }from '../page/ProdutosForm/ProdutosForm'
 
 
 function CustomRoute({ isPrivate, ...rest}){
@@ -25,11 +26,16 @@ export default function PrivateRoute(){
         <Switch>
             <CustomRoute exact path="/" component={Login} />
             <CustomRoute isPrivate path="/dashboard" component={Dashboard} />
+
             <CustomRoute isPrivate path="/categorias/novo" component={CategoriaForm} />
             <CustomRoute isPrivate path="/categories/update/:id" component={CategoriaForm} />
             <CustomRoute isPrivate path="/categorias" component={ListaCategorias} />
 
+            <CustomRoute isPrivate path="/produtos/novo" component={ProdutosForm} />
+            <CustomRoute isPrivate path="/produtos/update/:id" component={ProdutosForm} />
             <CustomRoute isPrivate path="/produtos" component={ListaProdutos} />
+            
+
             
         
           

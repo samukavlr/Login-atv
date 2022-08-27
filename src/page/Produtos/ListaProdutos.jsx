@@ -23,7 +23,7 @@ export const ListaProdutos = () =>{
             confirmAlert({
               title: "Deseja continuar",
               message:
-                "Deseja excluir essa categoria" +
+                "Deseja excluir esse produto" +
                 categories.name + 
                 "?",
               buttons: [
@@ -41,7 +41,7 @@ export const ListaProdutos = () =>{
         
 
 
-    const handleDelete = async (idCategories) =>{
+    const handleDelete = async (idProducts) =>{
         const headers = {
             'headers': {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -49,7 +49,7 @@ export const ListaProdutos = () =>{
             },
         }
 
-        await api.delete("/products/delete/"+idCategories, headers)
+        await api.delete("/products/delete/"+idProducts, headers)
         .then((response) =>{
             setStatus({
                 type:'success',
@@ -114,7 +114,7 @@ export const ListaProdutos = () =>{
             <div className="btnNovo">
             <h1>Produtos</h1>
             <Button variant="outline-success">
-                <Link className="noLink" to="/categorias/novo">Novo Produto</Link>
+                <Link className="noLink" to="/produtos/novo">Novo Produto</Link>
             </Button>
             </div>
             <Table striped bordered hover>  
@@ -135,9 +135,11 @@ export const ListaProdutos = () =>{
                         <td>{products.id}</td>
                         <td>{products.name}</td>
                         <td>{products.description}</td>
+                        <td>{products.quantity}</td>
+                        <td>{products.price}</td>
                         <td className="spaceFlex">
                         <Button variant="outline-warning">
-                            <Link className="noLink " to={"/products/update/"+products.id}>Editar</Link>
+                            <Link className="noLink " to={"/produtos/update/" +products.id}>Editar</Link>
                         </Button>
                         <Button variant="outline-danger" onClick={() => confirmDelete(products)}>
                             Excluir
