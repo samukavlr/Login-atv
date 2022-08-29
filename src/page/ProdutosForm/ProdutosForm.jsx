@@ -32,7 +32,11 @@ export const ProdutosForm = (props) => {
         ...values,
         [e.target.name]: e.target.value
     })
-    
+    const valorIdCategories = e => setValues({
+        ...values,
+        [e.target.name]: e.target.value
+    })
+
 
     useEffect(() => {
         const getProducts = async () => {
@@ -71,6 +75,38 @@ export const ProdutosForm = (props) => {
         if (id) getProducts();
 
     }, [id])
+    const getCategories = async () =>{
+
+        const headers = {
+            'headers': {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+
+            },
+        }   
+        
+        await api.get("/categories/all", headers)
+        .then((response) =>{
+            setCategories(response.data.categories);
+            setStatus({loading:false})
+        }).catch((err) =>{
+            if(err.response){
+                setStatus({
+                    type:'error',
+                    mensagem: err.response.data.mensagem
+                })
+            } else {
+                setStatus({
+                    type:'error',
+                    mensagem: 'Erro: Tente mais tarde!'
+                })
+            }
+        })
+    }
+
+    useEffect( () =>{
+        getCategories();
+    }, [])
+
 
     const formSubmit = async e => {
         e.preventDefault();
@@ -170,17 +206,13 @@ export const ProdutosForm = (props) => {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Categoria</Form.Label>
-                        <Form.Select></Form.Select>
+                        <Form.Select name="categorieId" value={values.categorieId} onChange={valorIdCategories} placeholder="Categoria do produto">
+                        {categories.map(categories => (
+                            <option key={categories.id} value={categories.id}>{categories.name}</option>
+                        ))}
+                        </Form.Select>
                     </Form.Group>
-                    {/* {!id &&
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Senha</Form.Label>
-                            <Form.Control type="password" name="password" onChange={valorInput} placeholder="Digite sua senha" />
-                        </Form.Group>
-                    } */}
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                        {/* <Form.Check type="checkbox" label="Check me out" /> */}
-                    </Form.Group>
+             
                     {status.loading
                         ? <Button variant="primary" disabled type="submit">Enviando...</Button>
                         : <Button variant="primary" type="submit">Enviar</Button>

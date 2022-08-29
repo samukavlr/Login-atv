@@ -23,7 +23,7 @@ export const ListaProdutos = () =>{
             confirmAlert({
               title: "Deseja continuar",
               message:
-                "Deseja excluir esse produto" +
+                "Deseja excluir o produto " +
                 categories.name + 
                 "?",
               buttons: [
@@ -33,7 +33,7 @@ export const ListaProdutos = () =>{
                 },
                 {
                   label: "Não",
-                  onClick: () => getCategories()
+                  onClick: () => getProducts()
                 }
               ]
             });
@@ -56,7 +56,7 @@ export const ListaProdutos = () =>{
                 mensagem: response.data.mensagem,
                 loading:true
             })
-            getCategories();
+            getProducts();
 
         }).catch((err) =>{
             if(err.response){
@@ -73,7 +73,7 @@ export const ListaProdutos = () =>{
         })
     }
 
-    const getCategories = async () =>{
+    const getProducts = async () =>{
 
         const headers = {
             'headers': {
@@ -100,9 +100,10 @@ export const ListaProdutos = () =>{
             }
         })
     }
+   
 
     useEffect( () =>{
-        getCategories();
+        getProducts();
     }, [])
 
 
@@ -120,18 +121,25 @@ export const ListaProdutos = () =>{
             <Table striped bordered hover>  
             <thead>
                 <tr>
+                    <th>Categoria</th>
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Quantidade</th>
                     <th>Preço</th>
                     <th></th>
+                    
                 </tr>
             </thead>
+            
+
             <tbody>
+       
             {(!status.loading &&
                 data.map(products =>(
-                    <tr key={products.id}>
+                    <tr 
+                        key={products.id}>
+                        <td ></td>
                         <td>{products.id}</td>
                         <td>{products.name}</td>
                         <td>{products.description}</td>
